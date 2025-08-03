@@ -7,6 +7,7 @@ A simple RESTful API built with Node.js, Express, and MongoDB.
 - User authentication and registration
 - CRUD operations for posts
 - Commenting system for posts
+- Comments are shown with parent post
 - Category management
 - Filter posts by user or category
 - Each post can have multiple categories and associated comments
