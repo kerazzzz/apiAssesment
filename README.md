@@ -30,9 +30,22 @@ A simple RESTful API built with Node.js, Express, and MongoDB.
 - `PUT /api/posts/:id` — Update a post
 - `DELETE /api/posts/:id` — Delete a post
 
+  ## Pagination
+
+You can paginate posts using the `page` and `limit` query parameters on the `/api/posts` endpoint.
+
+- `page` (optional): The page number (default is 1)
+- `limit` (optional): Number of posts per page (default is 3)
+
+**Example request:**
+```
+GET /api/posts?page=2&limit=3
+```
+
 ### Comments
 - `POST /api/comments` — Add a comment to a post
 - `GET /api/comments/:postId` — Get comments for a post
+
 
 
 
