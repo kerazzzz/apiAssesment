@@ -60,5 +60,5 @@ A simple RESTful API built with Node.js, Express, and MongoDB.
 
 1. Clone the repository
 2. Run `npm install`
-3. Set up your `.env` file with your MongoDB connection string
+3. Set up your `.env` file with your MongoDB connection string refer to `.env.example`
 4. Run `npm start`
