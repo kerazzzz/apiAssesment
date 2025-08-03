@@ -85,23 +85,58 @@ router.get("/:id", async (req, res) => {
 
 
 
-//GET ALL POSTS
+// //GET ALL POSTS
+// router.get("/", async (req, res) => {
+//   const username = req.query.user;
+//   const catName = req.query.cat;
+//   try {
+//     let posts;
+//     if (username) {
+//       posts = await Post.find({ username });
+//     } else if (catName) {
+//       posts = await Post.find({
+//         categories: {
+//           $in: [catName],
+//         },
+//       });
+//     } else {
+//       posts = await Post.find();
+//     }
+
+//     // For each post, fetch associated comments
+//     const postsWithComments = await Promise.all(
+//       posts.map(async (post) => {
+//         const comments = await Comment.find({ postId: post._id }).select("username text -_id");
+//         return { post, comments };
+//       })
+//     );
+
+//     res.status(200).json(postsWithComments);
+//   } catch (err) {
+//     res.status(500).json(err);
+//   }
+// });
+
+//---------------------^ works fine
+
+
+//GET ALL POSTS with pagination
 router.get("/", async (req, res) => {
   const username = req.query.user;
   const catName = req.query.cat;
+  const page = parseInt(req.query.page) || 1; // default to page 1
+  const limit = parseInt(req.query.limit) || 3; // default 3 posts per page
+  const skip = (page - 1) * limit;
+
   try {
-    let posts;
+    let filter = {};
     if (username) {
-      posts = await Post.find({ username });
+      filter.username = username;
     } else if (catName) {
-      posts = await Post.find({
-        categories: {
-          $in: [catName],
-        },
-      });
-    } else {
-      posts = await Post.find();
+      filter.categories = { $in: [catName] };
     }
+
+    const posts = await Post.find(filter).skip(skip).limit(limit);
 
     // For each post, fetch associated comments
     const postsWithComments = await Promise.all(
@@ -111,10 +146,21 @@ router.get("/", async (req, res) => {
       })
     );
 
-    res.status(200).json(postsWithComments);
+    // Optionally, send total count for frontend pagination
+    const totalPosts = await Post.countDocuments(filter);
+
+    res.status(200).json({
+      total: totalPosts,
+      page,
+      limit,
+      posts: postsWithComments,
+    });
   } catch (err) {
     res.status(500).json(err);
   }
 });
+
+
+
 
 module.exports = router;
