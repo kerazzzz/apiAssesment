@@ -5,8 +5,9 @@ const mongoose = require("mongoose");
 const authRoute = require("./routes/auth");
 const userRoute = require("./routes/users");
 const postRoute = require("./routes/posts");
-// const categoryRoute = require("./routes/categories");
 const path = require("path");
+
+const PORT = process.env.PORT || 5000;
 
 const commentRoute = require("./routes/comments"); // add this line
 
@@ -32,6 +33,6 @@ app.use("/api/posts", postRoute);
 app.use("/api/comments", commentRoute); // add this line below existing app.use
 
 
-app.listen("5000", () => {
+app.listen("PORT", () => {
   console.log("Backend is running.");
 });
